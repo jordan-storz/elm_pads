@@ -9,7 +9,7 @@ import Keyboard
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Port.stopSound StoppedSound
+        [ Port.soundStopped StoppedSound
         , Keyboard.downs routeKeyCode
         ]
 

@@ -9,4 +9,7 @@ port playSound : Sound -> Cmd msg
 port initialize : () -> Cmd msg
 
 
-port stopSound : (String -> msg) -> Sub msg
+port stopSound : Sound -> Cmd msg
+
+
+port soundStopped : (String -> msg) -> Sub msg

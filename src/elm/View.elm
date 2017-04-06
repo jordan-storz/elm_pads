@@ -15,7 +15,18 @@ view model =
 
 pads : List Sound -> List (Html Msg)
 pads =
-    List.map padButton
+    List.map pad
+
+
+pad : Sound -> Html Msg
+pad sound =
+    div [ class "pad-container" ]
+        [ padButton sound, stopButton sound ]
+
+
+stopButton : Sound -> Html Msg
+stopButton sound =
+    button [ onClick (StopSound sound) ] []
 
 
 padButton : Sound -> Html Msg

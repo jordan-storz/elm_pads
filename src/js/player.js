@@ -20,3 +20,9 @@ app.ports.playSound.subscribe(sound => {
     audio.currentTime = 0;
   }
 });
+
+app.ports.stopSound.subscribe(sound => {
+  let audio = document.querySelector(`#${sound.idName} audio`);
+  audio.pause();
+  audio.currentTime = 0;
+});
