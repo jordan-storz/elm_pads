@@ -2,8 +2,9 @@ module Subscription exposing (..)
 
 import Model exposing (Model)
 import Messages exposing (..)
+import Port
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.none
+    Port.stopSound StoppedSound

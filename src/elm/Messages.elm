@@ -5,3 +5,4 @@ import Model exposing (Sound)
 
 type Msg
     = PlaySound Sound
+    | StoppedSound String

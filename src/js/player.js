@@ -1,7 +1,18 @@
 const app = require('./elm-app');
 const $ = require('../../node_modules/jquery/dist/jquery.js');
+const eventStream = require('./event-streams.js');
 
+
+app.ports.initialize.subscribe(() => {
+  startEventStreams();
+});
+
+function startEventStreams() {
+  const audios = document.getElementsByTagName('audio');
+  eventStream(audios);
+}
 
 app.ports.playSound.subscribe(sound => {
-  document.getElementById(sound.name).play();
-})
+  let audio = document.querySelector(`#${sound.idName} audio`);
+  audio.play();
+});

@@ -20,8 +20,18 @@ pads =
 
 padButton : Sound -> Html Msg
 padButton sound =
-    button [ onClick (PlaySound sound), class "pad" ]
-        [ soundAudio sound ]
+    button
+        [ onClick (PlaySound sound)
+        , classList
+            [ ( "pad"
+              , True
+              )
+            , ( "playing", sound.playing )
+            ]
+        , id sound.idName
+        ]
+        [ soundAudio sound
+        ]
 
 
 soundAudio : Sound -> Html Msg
@@ -29,6 +39,5 @@ soundAudio sound =
     audio
         [ loop False
         , src sound.url
-        , id sound.name
         ]
         []
