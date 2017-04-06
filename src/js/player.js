@@ -14,5 +14,9 @@ function startEventStreams() {
 
 app.ports.playSound.subscribe(sound => {
   let audio = document.querySelector(`#${sound.idName} audio`);
-  audio.play();
+  if (audio.currentTime == 0) {
+    audio.play();
+  } else {
+    audio.currentTime = 0;
+  }
 });
