@@ -1,9 +1,10 @@
 module Subscription exposing (..)
 
-import Model exposing (Model)
+import Model exposing (Model, ControlType)
 import Messages exposing (..)
 import Port
 import Keyboard
+import Debug
 
 
 subscriptions : Model -> Sub Msg
@@ -16,18 +17,32 @@ subscriptions model =
 
 routeKeyCode : Keyboard.KeyCode -> Msg
 routeKeyCode keyCode =
-    case keyCode of
-        71 ->
+    case whichControl keyCode of
+        Just (Model.Play) ->
             KeyPlaySound keyCode
 
-        76 ->
-            KeyPlaySound keyCode
+        Just (Model.Stop) ->
+            KeyStopSound keyCode
 
-        66 ->
-            KeyPlaySound keyCode
-
-        86 ->
-            KeyPlaySound keyCode
-
-        _ ->
+        Nothing ->
             NoOp
+
+
+playKeyCodes : List Keyboard.KeyCode
+playKeyCodes =
+    [ 71, 76, 66, 86 ]
+
+
+stopKeyCodes : List Keyboard.KeyCode
+stopKeyCodes =
+    [ 67, 191, 77, 90 ]
+
+
+whichControl : Keyboard.KeyCode -> Maybe ControlType
+whichControl keyCode =
+    if List.member keyCode playKeyCodes then
+        Just Model.Play
+    else if List.member keyCode stopKeyCodes then
+        Just Model.Stop
+    else
+        Nothing

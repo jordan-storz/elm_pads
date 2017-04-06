@@ -10,6 +10,8 @@ soundByKeyCode keyCode sounds =
         sound :: xs ->
             if keyCode == sound.keyCode then
                 Just sound
+            else if keyCode == sound.stopCode then
+                Just sound
             else
                 soundByKeyCode keyCode xs
 

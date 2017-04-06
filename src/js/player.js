@@ -4,6 +4,7 @@ const eventStream = require('./event-streams.js');
 
 
 app.ports.initialize.subscribe(() => {
+  console.log('init');
   startEventStreams();
 });
 

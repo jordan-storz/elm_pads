@@ -1,7 +1,7 @@
 module Update exposing (..)
 
 import Messages exposing (..)
-import Model exposing (Model, Sound)
+import Model exposing (Model, Sound, ControlType)
 import Port exposing (playSound, stopSound)
 import SoundUpdate exposing (..)
 import SoundSelect exposing (soundByKeyCode)
@@ -21,6 +21,14 @@ update msg model =
                 Nothing ->
                     ( model, Cmd.none )
 
+        KeyStopSound keyCode ->
+            case soundByKeyCode keyCode model.sounds of
+                Just sound ->
+                    stopUpdateModel sound model
+
+                Nothing ->
+                    ( model, Cmd.none )
+
         StopSound sound ->
             ( model, stopSound sound )
 
@@ -34,3 +42,8 @@ update msg model =
 playUpdateModel : Sound -> Model -> ( Model, Cmd Msg )
 playUpdateModel sound model =
     ( { model | sounds = (updateStart sound.idName model.sounds) }, playSound sound )
+
+
+stopUpdateModel : Sound -> Model -> ( Model, Cmd Msg )
+stopUpdateModel sound model =
+    ( { model | sounds = (updateStop sound.idName model.sounds) }, stopSound sound )
