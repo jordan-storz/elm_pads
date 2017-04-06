@@ -4,13 +4,36 @@ div#pad-controls {
   padding: 3rem;
   display: flex;
 
+  div.pad-container {
 
-  button.pad {
-    width: 8rem;
-    height: 8rem;
-    margin-right: 4rem;
-    &.playing {
-      border: 2px solid green;
+    // border: 1px solid black;
+    width: 16rem;
+    display: flex;
+    justify-content: space-around;
+
+    button.pad {
+      background: radial-gradient(circle, rgb(36, 41, 50), rgb(96, 101, 110));
+      box-shadow: 0;
+      width: 8rem;
+      height: 8rem;
+      &.playing {
+        border: 2px solid green;
+      }
+    }
+
+    button.stop-button {
+      background-image: url('../static/images/stop-icon.png');
+      background-size: contain;
+      border-radius: 50%;
+      height: 3rem;
+      width: 3rem;
+      border: 1px solid red;
+      align-self: flex-end;
+      &.disabled {
+        opacity: 0.5;
+      }
     }
   }
+
+
 }

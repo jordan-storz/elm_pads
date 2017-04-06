@@ -26,7 +26,15 @@ pad sound =
 
 stopButton : Sound -> Html Msg
 stopButton sound =
-    button [ onClick (StopSound sound) ] []
+    button
+        [ onClick (StopSound sound)
+        , classList
+            [ ( "stop-button", True )
+            , ( "disabled", not sound.playing )
+            ]
+        , disabled (not sound.playing)
+        ]
+        []
 
 
 padButton : Sound -> Html Msg
