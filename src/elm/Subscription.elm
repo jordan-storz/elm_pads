@@ -17,10 +17,16 @@ subscriptions model =
 routeKeyCode : Keyboard.KeyCode -> Msg
 routeKeyCode keyCode =
     case keyCode of
+        71 ->
+            KeyPlaySound keyCode
+
+        76 ->
+            KeyPlaySound keyCode
+
         66 ->
             KeyPlaySound keyCode
 
-        87 ->
+        86 ->
             KeyPlaySound keyCode
 
         _ ->
