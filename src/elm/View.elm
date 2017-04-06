@@ -9,8 +9,16 @@ import Messages exposing (..)
 
 view : Model -> Html Msg
 view model =
+    div [ id "application" ]
+        [ editSoundControls model.editSound
+        , padControls model.sounds
+        ]
+
+
+padControls : List Sound -> Html Msg
+padControls sounds =
     div [ id "pad-controls" ]
-        (pads model.sounds)
+        (pads sounds)
 
 
 pads : List Sound -> List (Html Msg)
@@ -60,3 +68,9 @@ soundAudio sound =
         , src sound.url
         ]
         []
+
+
+editSoundControls : Sound -> Html Msg
+editSoundControls sound =
+    div [ id "edit-sound-controls" ]
+        [ text (toString sound.url) ]

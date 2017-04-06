@@ -41,7 +41,12 @@ update msg model =
 
 playUpdateModel : Sound -> Model -> ( Model, Cmd Msg )
 playUpdateModel sound model =
-    ( { model | sounds = (updateStart sound.idName model.sounds) }, playSound sound )
+    ( { model
+        | sounds = (updateStart sound.idName model.sounds)
+        , editSound = sound
+      }
+    , playSound sound
+    )
 
 
 stopUpdateModel : Sound -> Model -> ( Model, Cmd Msg )

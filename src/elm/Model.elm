@@ -3,6 +3,7 @@ module Model exposing (..)
 
 type alias Model =
     { sounds : List Sound
+    , editSound : Sound
     }
 
 
@@ -23,6 +24,7 @@ type ControlType
 initialModel : Model
 initialModel =
     { sounds = sampleSounds
+    , editSound = firstSound sampleSounds
     }
 
 
@@ -53,3 +55,13 @@ sampleSounds =
       , stopCode = 90
       }
     ]
+
+
+firstSound : List Sound -> Sound
+firstSound sounds =
+    case List.head sounds of
+        Just sound ->
+            sound
+
+        Nothing ->
+            Sound "" "" False 11 12

@@ -1,11 +1,17 @@
 div#pad-controls {
 
+  margin-left: 6rem;
+  margin-top: 6rem;
   border: 1px solid black;
-  padding: 3rem;
+  padding-left: 3rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   width: 44rem;
+  height: 33rem;
+  align-content: space-between;
 
   div.pad-container {
 
@@ -13,7 +19,7 @@ div#pad-controls {
     width: 16rem;
     display: flex;
     justify-content: space-around;
-    margin-bottom: 8rem;
+    // margin-bottom: 8rem;
 
     button.pad {
       background: radial-gradient(circle, rgb(36, 41, 50), rgb(96, 101, 110));
