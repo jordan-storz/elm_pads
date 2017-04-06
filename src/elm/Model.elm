@@ -2,7 +2,7 @@ module Model exposing (..)
 
 
 type alias Model =
-    { sound : Sound
+    { sounds : List Sound
     }
 
 
@@ -14,12 +14,16 @@ type alias Sound =
 
 initialModel : Model
 initialModel =
-    { sound = sampleSound
+    { sounds = sampleSounds
     }
 
 
-sampleSound : Sound
-sampleSound =
-    { url = "https://earbyter-1.s3.amazonaws.com/bells.m4a"
-    , name = "Bells"
-    }
+sampleSounds : List Sound
+sampleSounds =
+    [ { url = "https://earbyter-1.s3.amazonaws.com/bells.m4a"
+      , name = "Bells"
+      }
+    , { url = "https://s3-us-west-2.amazonaws.com/earbyter-1/birdchirps1.m4a"
+      , name = "Birds"
+      }
+    ]
