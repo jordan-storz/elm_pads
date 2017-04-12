@@ -1,12 +1,12 @@
 module Messages exposing (..)
 
-import Model exposing (Sound)
+import Model exposing (Sound, Pad)
 
 
 type Msg
-    = PlaySound Sound
+    = PlaySound Pad
     | KeyPlaySound Int
-    | StopSound Sound
+    | StopSound Pad
     | KeyStopSound Int
-    | StoppedSound String
+    | StoppedSound Int
     | NoOp

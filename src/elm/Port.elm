@@ -1,15 +1,15 @@
 port module Port exposing (..)
 
-import Model exposing (Sound)
+import Model exposing (Sound, Pad)
 
 
-port playSound : Sound -> Cmd msg
+port playSound : Pad -> Cmd msg
 
 
 port initialize : () -> Cmd msg
 
 
-port stopSound : Sound -> Cmd msg
+port stopSound : Pad -> Cmd msg
 
 
-port soundStopped : (String -> msg) -> Sub msg
+port soundStopped : (Int -> msg) -> Sub msg

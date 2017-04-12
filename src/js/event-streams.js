@@ -12,7 +12,10 @@ module.exports = function(audios) {
 
 
   stopped_.subscribe(event => {
-    let idName = event.target.parentNode.getAttribute('id');
-    app.ports.soundStopped.send(idName);
+    let idStr = event.target.parentNode.getAttribute('id').replace('pad-', '');
+    let id = Number(idStr);
+    console.log('ID:');
+    console.log(idStr);
+    app.ports.soundStopped.send(id);
   });
 }

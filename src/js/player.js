@@ -13,8 +13,8 @@ function startEventStreams() {
   eventStream(audios);
 }
 
-app.ports.playSound.subscribe(sound => {
-  let audio = document.querySelector(`#${sound.idName} audio`);
+app.ports.playSound.subscribe(pad => {
+  let audio = document.querySelector(`#pad-${pad.id} audio`);
   if (audio.currentTime == 0) {
     audio.play();
   } else {
@@ -22,8 +22,8 @@ app.ports.playSound.subscribe(sound => {
   }
 });
 
-app.ports.stopSound.subscribe(sound => {
-  let audio = document.querySelector(`#${sound.idName} audio`);
+app.ports.stopSound.subscribe(pad => {
+  let audio = document.querySelector(`#pad-${pad.id} audio`);
   audio.pause();
   audio.currentTime = 0;
 });

@@ -1,18 +1,27 @@
 module Model exposing (..)
 
+import Array exposing (Array)
+
 
 type alias Model =
-    { sounds : List Sound
-    , editSound : Sound
+    { pads : List Pad
+    , focusPad : Pad
+    }
+
+
+type alias Pad =
+    { selectedSound : Sound
+    , soundBank : Array Sound
+    , id : Int
+    , startKeyCode : Int
+    , stopKeyCode : Int
+    , playing : Bool
     }
 
 
 type alias Sound =
     { url : String
     , idName : String
-    , playing : Bool
-    , keyCode : Int
-    , stopCode : Int
     }
 
 
@@ -23,45 +32,65 @@ type ControlType
 
 initialModel : Model
 initialModel =
-    { sounds = sampleSounds
-    , editSound = firstSound sampleSounds
+    { pads = emptyPads
+    , focusPad = firstPad emptyPads
     }
 
 
-sampleSounds : List Sound
-sampleSounds =
-    [ { url = "https://earbyter-1.s3.amazonaws.com/bells.m4a"
-      , idName = "sound-1"
+emptyPads : List Pad
+emptyPads =
+    [ { id = 1
+      , selectedSound = blankSound
+      , soundBank = Array.fromList [ blankSound ]
+      , startKeyCode = 71
+      , stopKeyCode = 67
       , playing = False
-      , keyCode = 71
-      , stopCode = 67
       }
-    , { url = "https://s3-us-west-2.amazonaws.com/earbyter-1/birdchirps1.m4a"
-      , idName = "sound-2"
+    , { id = 2
+      , selectedSound = blankSound
+      , soundBank = Array.fromList [ blankSound ]
+      , startKeyCode = 76
+      , stopKeyCode = 191
       , playing = False
-      , keyCode = 76
-      , stopCode = 191
       }
-    , { url = "http://www.noiseaddicts.com/samples_1w72b820/3724.mp3"
-      , idName = "sound-3"
+    , { id = 3
+      , selectedSound = blankSound
+      , soundBank = Array.fromList [ blankSound ]
+      , startKeyCode = 66
+      , stopKeyCode = 77
       , playing = False
-      , keyCode = 66
-      , stopCode = 77
       }
-    , { url = "https://earbyter-1.s3.amazonaws.com/bowlingstrike.m4a"
-      , idName = "sound-4"
+    , { id = 4
+      , selectedSound = blankSound
+      , soundBank = Array.fromList [ blankSound ]
+      , startKeyCode = 86
+      , stopKeyCode = 90
       , playing = False
-      , keyCode = 86
-      , stopCode = 90
       }
     ]
 
 
-firstSound : List Sound -> Sound
-firstSound sounds =
-    case List.head sounds of
-        Just sound ->
-            sound
+blankSound : Sound
+blankSound =
+    Sound "https://earbyter-1.s3.amazonaws.com/bells.m4a" "Chimes"
+
+
+blankPad : Pad
+blankPad =
+    { id = 4
+    , selectedSound = blankSound
+    , soundBank = Array.fromList [ blankSound ]
+    , startKeyCode = 86
+    , stopKeyCode = 90
+    , playing = False
+    }
+
+
+firstPad : List Pad -> Pad
+firstPad pads =
+    case List.head pads of
+        Just pad ->
+            pad
 
         Nothing ->
-            Sound "" "" False 11 12
+            blankPad

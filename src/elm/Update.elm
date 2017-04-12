@@ -1,54 +1,54 @@
 module Update exposing (..)
 
 import Messages exposing (..)
-import Model exposing (Model, Sound, ControlType)
+import Model exposing (Model, Sound, ControlType, Pad)
 import Port exposing (playSound, stopSound)
-import SoundUpdate exposing (..)
-import SoundSelect exposing (soundByKeyCode)
+import PadUpdate exposing (updateStart, updateStop)
+import PadSelect exposing (padByKeyCode)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        PlaySound sound ->
-            playUpdateModel sound model
+        PlaySound pad ->
+            playUpdateModel pad model
 
         KeyPlaySound keyCode ->
-            case soundByKeyCode keyCode model.sounds of
-                Just sound ->
-                    playUpdateModel sound model
+            case padByKeyCode keyCode model.pads of
+                Just pad ->
+                    playUpdateModel pad model
 
                 Nothing ->
                     ( model, Cmd.none )
 
         KeyStopSound keyCode ->
-            case soundByKeyCode keyCode model.sounds of
-                Just sound ->
-                    stopUpdateModel sound model
+            case padByKeyCode keyCode model.pads of
+                Just pad ->
+                    stopUpdateModel pad model
 
                 Nothing ->
                     ( model, Cmd.none )
 
-        StopSound sound ->
-            ( model, stopSound sound )
+        StopSound pad ->
+            ( model, stopSound pad )
 
-        StoppedSound idName ->
-            { model | sounds = (updateStop idName model.sounds) } ! []
+        StoppedSound id ->
+            { model | pads = (updateStop id model.pads) } ! []
 
         NoOp ->
             ( model, Cmd.none )
 
 
-playUpdateModel : Sound -> Model -> ( Model, Cmd Msg )
-playUpdateModel sound model =
+playUpdateModel : Pad -> Model -> ( Model, Cmd Msg )
+playUpdateModel pad model =
     ( { model
-        | sounds = (updateStart sound.idName model.sounds)
-        , editSound = sound
+        | pads = (PadUpdate.updateStart pad.id model.pads)
+        , focusPad = pad
       }
-    , playSound sound
+    , playSound pad
     )
 
 
-stopUpdateModel : Sound -> Model -> ( Model, Cmd Msg )
-stopUpdateModel sound model =
-    ( { model | sounds = (updateStop sound.idName model.sounds) }, stopSound sound )
+stopUpdateModel : Pad -> Model -> ( Model, Cmd Msg )
+stopUpdateModel pad model =
+    ( { model | pads = (PadUpdate.updateStop pad.id model.pads) }, stopSound pad )

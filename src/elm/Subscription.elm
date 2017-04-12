@@ -4,7 +4,6 @@ import Model exposing (Model, ControlType)
 import Messages exposing (..)
 import Port
 import Keyboard
-import Debug
 
 
 subscriptions : Model -> Sub Msg

@@ -3,74 +3,75 @@ module View exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (..)
-import Model exposing (Model, Sound)
+import Model exposing (Model, Sound, Pad)
 import Messages exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     div [ id "application" ]
-        [ editSoundControls model.editSound
-        , padControls model.sounds
+        [ editSoundControls model.focusPad
+        , padControls model.pads
         ]
 
 
-padControls : List Sound -> Html Msg
-padControls sounds =
+padControls : List Pad -> Html Msg
+padControls pads =
     div [ id "pad-controls" ]
-        (pads sounds)
+        (padGroup pads)
 
 
-pads : List Sound -> List (Html Msg)
-pads =
-    List.map pad
+padGroup : List Pad -> List (Html Msg)
+padGroup =
+    List.map padView
 
 
-pad : Sound -> Html Msg
-pad sound =
+padView : Pad -> Html Msg
+padView pad =
     div [ class "pad-container" ]
-        [ padButton sound, stopButton sound ]
+        [ padButton pad, stopButton pad ]
 
 
-stopButton : Sound -> Html Msg
-stopButton sound =
+stopButton : Pad -> Html Msg
+stopButton pad =
     button
-        [ onClick (StopSound sound)
+        [ onClick (StopSound pad)
         , classList
             [ ( "stop-button", True )
-            , ( "disabled", not sound.playing )
+            , ( "disabled", not pad.playing )
             ]
-        , disabled (not sound.playing)
+        , disabled (not pad.playing)
         ]
         []
 
 
-padButton : Sound -> Html Msg
-padButton sound =
+padButton : Pad -> Html Msg
+padButton pad =
     button
-        [ onClick (PlaySound sound)
+        [ onClick (PlaySound pad)
         , classList
             [ ( "pad"
               , True
               )
-            , ( "playing", sound.playing )
+            , ( "playing", pad.playing )
             ]
-        , id sound.idName
+        , id <| "pad-" ++ (toString pad.id)
         ]
-        [ soundAudio sound
+        [ soundAudio pad
         ]
 
 
-soundAudio : Sound -> Html Msg
-soundAudio sound =
+soundAudio : Pad -> Html Msg
+soundAudio pad =
     audio
         [ loop False
-        , src sound.url
+        , src pad.selectedSound.url
+        , id <| (toString pad.id) ++ "-sound-audio"
         ]
         []
 
 
-editSoundControls : Sound -> Html Msg
-editSoundControls sound =
+editSoundControls : Pad -> Html Msg
+editSoundControls pad =
     div [ id "edit-sound-controls" ]
-        [ text (toString sound.url) ]
+        [ text (toString pad.id) ]
