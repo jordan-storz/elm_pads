@@ -14,8 +14,6 @@ module.exports = function(audios) {
   stopped_.subscribe(event => {
     let idStr = event.target.parentNode.getAttribute('id').replace('pad-', '');
     let id = Number(idStr);
-    console.log('ID:');
-    console.log(idStr);
     app.ports.soundStopped.send(id);
   });
 }

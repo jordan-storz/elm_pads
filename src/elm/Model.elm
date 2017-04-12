@@ -6,6 +6,7 @@ import Array exposing (Array)
 type alias Model =
     { pads : List Pad
     , focusPad : Pad
+    , soundBanks : List SoundBank
     }
 
 
@@ -30,10 +31,15 @@ type ControlType
     | Stop
 
 
+type alias SoundBank =
+    Array Sound
+
+
 initialModel : Model
 initialModel =
     { pads = emptyPads
     , focusPad = firstPad emptyPads
+    , soundBanks = [ blankSoundBank ]
     }
 
 
@@ -41,28 +47,28 @@ emptyPads : List Pad
 emptyPads =
     [ { id = 1
       , selectedSound = blankSound
-      , soundBank = Array.fromList [ blankSound ]
+      , soundBank = blankSoundBank
       , startKeyCode = 71
       , stopKeyCode = 67
       , playing = False
       }
     , { id = 2
       , selectedSound = blankSound
-      , soundBank = Array.fromList [ blankSound ]
+      , soundBank = blankSoundBank
       , startKeyCode = 76
       , stopKeyCode = 191
       , playing = False
       }
     , { id = 3
       , selectedSound = blankSound
-      , soundBank = Array.fromList [ blankSound ]
+      , soundBank = blankSoundBank
       , startKeyCode = 66
       , stopKeyCode = 77
       , playing = False
       }
     , { id = 4
       , selectedSound = blankSound
-      , soundBank = Array.fromList [ blankSound ]
+      , soundBank = blankSoundBank
       , startKeyCode = 86
       , stopKeyCode = 90
       , playing = False
@@ -94,3 +100,8 @@ firstPad pads =
 
         Nothing ->
             blankPad
+
+
+blankSoundBank : SoundBank
+blankSoundBank =
+    Array.fromList [ blankSound ]
