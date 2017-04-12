@@ -1,6 +1,7 @@
 module Messages exposing (..)
 
-import Model exposing (Sound, Pad)
+import Http
+import Model exposing (Sound, Pad, SoundBank)
 
 
 type Msg
@@ -9,4 +10,6 @@ type Msg
     | StopSound Pad
     | KeyStopSound Int
     | StoppedSound Int
+    | FetchSoundBank
+    | ReceiveSoundBank (Result Http.Error SoundBank)
     | NoOp

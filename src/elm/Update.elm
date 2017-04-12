@@ -5,6 +5,7 @@ import Model exposing (Model, Sound, ControlType, Pad)
 import Port exposing (playSound, stopSound)
 import PadUpdate exposing (updateStart, updateStop)
 import PadSelect exposing (padByKeyCode)
+import Fetch
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -34,6 +35,15 @@ update msg model =
 
         StoppedSound id ->
             { model | pads = (updateStop id model.pads) } ! []
+
+        FetchSoundBank ->
+            ( model, Fetch.fetchSoundBank "mik" )
+
+        ReceiveSoundBank (Ok soundBank) ->
+            { model | soundBanks = soundBank :: model.soundBanks } ! []
+
+        ReceiveSoundBank (Err _) ->
+            ( model, Cmd.none )
 
         NoOp ->
             ( model, Cmd.none )

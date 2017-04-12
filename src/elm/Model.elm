@@ -22,7 +22,7 @@ type alias Pad =
 
 type alias Sound =
     { url : String
-    , idName : String
+    , name : String
     }
 
 

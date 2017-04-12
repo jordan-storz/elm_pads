@@ -1,9 +1,10 @@
 module View exposing (..)
 
+import Array
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (..)
-import Model exposing (Model, Sound, Pad)
+import Model exposing (Model, Sound, Pad, SoundBank)
 import Messages exposing (..)
 
 
@@ -12,6 +13,7 @@ view model =
     div [ id "application" ]
         [ editSoundControls model.focusPad
         , padControls model.pads
+        , soundBanksList model.soundBanks
         ]
 
 
@@ -75,3 +77,25 @@ editSoundControls : Pad -> Html Msg
 editSoundControls pad =
     div [ id "edit-sound-controls" ]
         [ text (toString pad.id) ]
+
+
+soundBanksList : List SoundBank -> Html Msg
+soundBanksList soundBanks =
+    div [] <|
+        List.map
+            (\soundBank -> soundsList soundBank)
+            soundBanks
+
+
+soundsList : SoundBank -> Html Msg
+soundsList soundBank =
+    ul [] <|
+        Array.toList <|
+            Array.map
+                (\sound -> soundView sound)
+                soundBank
+
+
+soundView : Sound -> Html Msg
+soundView sound =
+    li [] [ text sound.name ]
