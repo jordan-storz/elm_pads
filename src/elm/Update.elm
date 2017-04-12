@@ -36,8 +36,11 @@ update msg model =
         StoppedSound id ->
             { model | pads = (updateStop id model.pads) } ! []
 
-        FetchSoundBank ->
-            ( model, Fetch.fetchSoundBank "mik" )
+        FetchDefaultSoundBank ->
+            ( model, Fetch.fetchDefaultSoundBank )
+
+        FetchSoundBank username ->
+            ( model, Fetch.fetchSoundBank username )
 
         ReceiveSoundBank (Ok soundBank) ->
             { model | soundBanks = soundBank :: model.soundBanks } ! []

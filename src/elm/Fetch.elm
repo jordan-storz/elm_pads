@@ -11,6 +11,11 @@ fetchSoundBank username =
         (Http.get (makeUrl username) Decoders.soundBankDecoder)
 
 
+fetchDefaultSoundBank : Cmd Msg
+fetchDefaultSoundBank =
+    fetchSoundBank "mik"
+
+
 soundEndpoint : String
 soundEndpoint =
     "https://earbyter.herokuapp.com/api/sounds?author="
