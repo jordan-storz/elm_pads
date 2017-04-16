@@ -1,6 +1,6 @@
 module View exposing (..)
 
-import Array
+import Array exposing (Array)
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (..)
@@ -11,27 +11,27 @@ import Messages exposing (..)
 view : Model -> Html Msg
 view model =
     div [ id "application" ]
-        [ editSoundControls model.focusPad
-        , padControls model.pads
+        [ settingsArea model
+        , padControls model
         , soundBanksList model.soundBanks
         ]
 
 
-padControls : List Pad -> Html Msg
-padControls pads =
+padControls : Model -> Html Msg
+padControls model =
     div [ id "pad-controls" ]
-        (padGroup pads)
+        (padGroup model model.pads)
 
 
-padGroup : List Pad -> List (Html Msg)
-padGroup =
-    List.map padView
+padGroup : Model -> List Pad -> List (Html Msg)
+padGroup model =
+    List.map (padView model)
 
 
-padView : Pad -> Html Msg
-padView pad =
+padView : Model -> Pad -> Html Msg
+padView model pad =
     div [ class "pad-container" ]
-        [ padButton pad, stopButton pad ]
+        [ padButton model pad, stopButton pad ]
 
 
 stopButton : Pad -> Html Msg
@@ -47,8 +47,8 @@ stopButton pad =
         []
 
 
-padButton : Pad -> Html Msg
-padButton pad =
+padButton : Model -> Pad -> Html Msg
+padButton model pad =
     button
         [ onClick (PlaySound pad)
         , classList
@@ -59,32 +59,51 @@ padButton pad =
             ]
         , id <| "pad-" ++ (toString pad.id)
         ]
-        [ soundAudio pad
+        [ soundAudio model pad
         ]
 
 
-soundAudio : Pad -> Html Msg
-soundAudio pad =
+soundAudio : Model -> Pad -> Html Msg
+soundAudio model pad =
     audio
         [ loop False
-        , src pad.selectedSound.url
+        , src (getPadSrc pad model)
         , id <| (toString pad.id) ++ "-sound-audio"
         ]
         []
 
 
-editSoundControls : Pad -> Html Msg
-editSoundControls pad =
-    div [ id "edit-sound-controls" ]
-        [ text (toString pad.id) ]
+settingsArea : Model -> Html Msg
+settingsArea model =
+    div [ id "settings-area" ]
+        (List.map
+            (padSettings model)
+            model.pads
+        )
 
 
-soundBanksList : List SoundBank -> Html Msg
+padSettings : Model -> Pad -> Html Msg
+padSettings model pad =
+    div [ class "pad-settings" ]
+        [ (soundBankSelect model.soundBanks pad)
+        ]
+
+
+soundBankSelect : Array SoundBank -> Pad -> Html Msg
+soundBankSelect soundBanks pad =
+    div []
+        [ button [ onClick (NextSoundBank pad) ] [ text "Soundbank +" ]
+        , button [] [ text "Soundbank -" ]
+        ]
+
+
+soundBanksList : Array SoundBank -> Html Msg
 soundBanksList soundBanks =
     div [] <|
-        List.map
-            (\soundBank -> soundsList soundBank)
-            soundBanks
+        Array.toList <|
+            Array.map
+                (\soundBank -> soundsList soundBank)
+                soundBanks
 
 
 soundsList : SoundBank -> Html Msg
@@ -99,3 +118,28 @@ soundsList soundBank =
 soundView : Sound -> Html Msg
 soundView sound =
     li [] [ text sound.name ]
+
+
+getPadSrc : Pad -> Model -> String
+getPadSrc pad model =
+    accessSrc pad <| accessSoundBank pad model
+
+
+accessSoundBank : Pad -> Model -> SoundBank
+accessSoundBank pad model =
+    case Array.get pad.soundBankIndex model.soundBanks of
+        Just soundBank ->
+            soundBank
+
+        Nothing ->
+            Model.blankSoundBank
+
+
+accessSrc : Pad -> SoundBank -> String
+accessSrc pad soundBank =
+    case Array.get pad.soundIndex soundBank of
+        Just sound ->
+            sound.url
+
+        Nothing ->
+            ""

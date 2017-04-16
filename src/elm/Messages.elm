@@ -10,7 +10,9 @@ type Msg
     | StopSound Pad
     | KeyStopSound Int
     | StoppedSound Int
+    | LoadSoundBank SoundBank Pad
     | FetchSoundBank String
     | FetchDefaultSoundBank
     | ReceiveSoundBank (Result Http.Error SoundBank)
+    | NextSoundBank Pad
     | NoOp

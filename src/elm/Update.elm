@@ -1,9 +1,10 @@
 module Update exposing (..)
 
+import Array exposing (Array)
 import Messages exposing (..)
 import Model exposing (Model, Sound, ControlType, Pad)
 import Port exposing (playSound, stopSound)
-import PadUpdate exposing (updateStart, updateStop)
+import PadUpdate exposing (updateStart, updateStop, updateSoundBank)
 import PadSelect exposing (padByKeyCode)
 import Fetch
 
@@ -12,7 +13,10 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         PlaySound pad ->
-            playUpdateModel pad model
+            Debug.log (toString model)
+                playUpdateModel
+                pad
+                model
 
         KeyPlaySound keyCode ->
             case padByKeyCode keyCode model.pads of
@@ -33,6 +37,9 @@ update msg model =
         StopSound pad ->
             ( model, stopSound pad )
 
+        LoadSoundBank soundBank pad ->
+            playUpdateModel pad model
+
         StoppedSound id ->
             { model | pads = (updateStop id model.pads) } ! []
 
@@ -43,10 +50,17 @@ update msg model =
             ( model, Fetch.fetchSoundBank username )
 
         ReceiveSoundBank (Ok soundBank) ->
-            { model | soundBanks = soundBank :: model.soundBanks } ! []
+            { model | soundBanks = Array.push soundBank model.soundBanks } ! []
 
         ReceiveSoundBank (Err _) ->
             ( model, Cmd.none )
+
+        NextSoundBank pad ->
+            ({ model
+                | pads = updateSoundBank pad.id model.soundBanks model.pads
+             }
+            )
+                ! []
 
         NoOp ->
             ( model, Cmd.none )
