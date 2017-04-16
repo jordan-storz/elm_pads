@@ -92,7 +92,7 @@ padSettings model pad =
 soundBankSelect : Array SoundBank -> Pad -> Html Msg
 soundBankSelect soundBanks pad =
     div [ class "sound-bank-select" ]
-        [ button [] [ text "-" ]
+        [ button [ onClick (PrevSoundBank pad) ] [ text "-" ]
         , text "Soundbank"
         , button [ onClick (NextSoundBank pad) ] [ text "+" ]
         ]
