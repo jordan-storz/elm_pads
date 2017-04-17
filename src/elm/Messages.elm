@@ -17,4 +17,5 @@ type Msg
     | NextSoundBank Pad
     | PrevSoundBank Pad
     | NextSound Pad
+    | PreviousSound Pad
     | NoOp

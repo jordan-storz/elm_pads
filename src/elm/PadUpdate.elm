@@ -78,18 +78,37 @@ firstSound soundBank =
 
 
 nextSoundUpdate : Int -> Array SoundBank -> List Pad -> List Pad
-nextSoundUpdate padId soundBanks =
-    List.map
-        (\pad ->
-            if pad.id == padId then
-                let
-                    soundBank =
-                        getSoundBank pad soundBanks
-                in
-                    { pad | soundIndex = (pad.soundIndex + 1) % Array.length soundBank }
-            else
-                pad
-        )
+nextSoundUpdate padId soundBanks pads =
+    soundUpdate Next padId soundBanks pads
+
+
+previousSoundUpdate : Int -> Array SoundBank -> List Pad -> List Pad
+previousSoundUpdate padId soundBanks pads =
+    soundUpdate Previous padId soundBanks pads
+
+
+soundUpdate : DirectionControl -> Int -> Array SoundBank -> List Pad -> List Pad
+soundUpdate directionControl padId soundBanks =
+    let
+        modifier =
+            case directionControl of
+                Next ->
+                    1
+
+                Previous ->
+                    -1
+    in
+        List.map
+            (\pad ->
+                if pad.id == padId then
+                    let
+                        soundBank =
+                            getSoundBank pad soundBanks
+                    in
+                        { pad | soundIndex = (pad.soundIndex + modifier) % Array.length soundBank }
+                else
+                    pad
+            )
 
 
 getSoundBank : Pad -> Array SoundBank -> SoundBank

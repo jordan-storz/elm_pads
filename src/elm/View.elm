@@ -86,22 +86,32 @@ padSettings : Model -> Pad -> Html Msg
 padSettings model pad =
     div [ class "pad-settings" ]
         [ (soundBankSelect model.soundBanks pad)
-        , (soundSelect pad)
+        , (soundSelect pad (accessSoundBank pad model))
         ]
 
 
-soundSelect : Pad -> Html Msg
-soundSelect pad =
+soundSelect : Pad -> SoundBank -> Html Msg
+soundSelect pad soundBank =
     div
         [ classList
             [ ( "sound-select", True )
             , ( "selector-container", True )
             ]
         ]
-        [ button [] [ text "-" ]
-        , text "Sound"
+        [ button [ onClick (PreviousSound pad) ] [ text "-" ]
+        , div [ class "sound-name" ] [ text "Sound:", p [] [ text (.name <| getSound pad soundBank) ] ]
         , button [ onClick (NextSound pad) ] [ text "+" ]
         ]
+
+
+getSound : Pad -> SoundBank -> Sound
+getSound pad soundBank =
+    case Array.get pad.soundIndex soundBank of
+        Just sound ->
+            sound
+
+        Nothing ->
+            Model.blankSound
 
 
 soundBankSelect : Array SoundBank -> Pad -> Html Msg

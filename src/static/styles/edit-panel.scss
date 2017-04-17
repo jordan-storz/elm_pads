@@ -13,6 +13,10 @@ div#settings-area {
       display: flex;
       justify-content: space-between;
       padding: 0.5rem 1rem;
+      div.sound-name {
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 }
