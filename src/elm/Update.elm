@@ -4,7 +4,7 @@ import Array exposing (Array)
 import Messages exposing (..)
 import Model exposing (Model, Sound, ControlType, Pad)
 import Port exposing (playSound, stopSound)
-import PadUpdate exposing (updateStart, updateStop, nextSoundBank, previousSoundBank)
+import PadUpdate exposing (updateStart, updateStop, nextSoundBank, previousSoundBank, nextSoundUpdate)
 import PadSelect exposing (padByKeyCode)
 import Fetch
 
@@ -65,6 +65,12 @@ update msg model =
         PrevSoundBank pad ->
             { model
                 | pads = previousSoundBank pad.id model.soundBanks model.pads
+            }
+                ! []
+
+        NextSound pad ->
+            { model
+                | pads = nextSoundUpdate pad.id model.soundBanks model.pads
             }
                 ! []
 

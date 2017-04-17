@@ -16,4 +16,5 @@ type Msg
     | ReceiveSoundBank (Result Http.Error SoundBank)
     | NextSoundBank Pad
     | PrevSoundBank Pad
+    | NextSound Pad
     | NoOp

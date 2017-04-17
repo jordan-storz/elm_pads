@@ -75,3 +75,28 @@ firstSound soundBank =
 
         Nothing ->
             Sound "" ""
+
+
+nextSoundUpdate : Int -> Array SoundBank -> List Pad -> List Pad
+nextSoundUpdate padId soundBanks =
+    List.map
+        (\pad ->
+            if pad.id == padId then
+                let
+                    soundBank =
+                        getSoundBank pad soundBanks
+                in
+                    { pad | soundIndex = (pad.soundIndex + 1) % Array.length soundBank }
+            else
+                pad
+        )
+
+
+getSoundBank : Pad -> Array SoundBank -> SoundBank
+getSoundBank pad soundBanks =
+    case Array.get pad.soundBankIndex soundBanks of
+        Just soundBank ->
+            soundBank
+
+        Nothing ->
+            Model.blankSoundBank
